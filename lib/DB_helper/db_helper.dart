@@ -32,7 +32,7 @@ class DB_helper with ChangeNotifier {
 
   creat() async {
     var direcroty = await getApplicationDocumentsDirectory();
-    String path = join(direcroty.path, "sqqqqmqrpqps.db");
+    String path = join(direcroty.path, "sqnrpkaqps.db");
     return await openDatabase(path, version: 1, onCreate: oncreate);
   }
 
