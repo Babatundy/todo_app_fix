@@ -37,7 +37,7 @@ class Task_data_provider with ChangeNotifier {
   bool checked = false;
 
   void check_task(bool b, int task_id) async {
-    print("nomek");
+
     checked = b;
     DB_helper.instnace.update(id: task_id, checked: checked ? 1 : 0);
     notifyListeners();

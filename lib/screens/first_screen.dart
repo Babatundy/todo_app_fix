@@ -1,5 +1,6 @@
 import 'package:fixingtodoapp/DB_helper/db_helper.dart';
 import 'package:fixingtodoapp/models/task.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fixingtodoapp/providers/provider.dart';
@@ -11,13 +12,11 @@ class Main_screen extends StatefulWidget {
 }
 
 class _Main_screenState extends State<Main_screen> {
-
-
   int index = 0;
 
   @override
   void initState() {
-    Provider.of<Task_data_provider>(context,listen: false).check_database();
+    Provider.of<Task_data_provider>(context, listen: false).check_database();
     super.initState();
   }
 
@@ -26,20 +25,33 @@ class _Main_screenState extends State<Main_screen> {
     return Provider.of<Task_data_provider>(context).start
         ? Scaffold(
             appBar: AppBar(
-              title: Text("todo"),
+              elevation: 10,
+              centerTitle: true,
+              title: Text(
+                "TODO",
+                style: TextStyle(color: Colors.black),
+              ),
+              backgroundColor: Colors.white70,
             ),
-            body: ListView.builder(
-              itemCount: Provider.of<Task_data_provider>(contextt).tasks.length,
-              itemBuilder: (context, i) {
-                index = i;
-                Provider.of<Task_data_provider>(contextt, listen: false)
-                    .tasks[i]
-                    .index = index;
+            body: Neumorphic(
+              child: ListView.builder(
+                itemCount:
+                    Provider.of<Task_data_provider>(contextt).tasks.length,
+                itemBuilder: (context, i) {
+                  index = i;
+                  Provider.of<Task_data_provider>(contextt, listen: false)
+                      .tasks[i]
+                      .index = index;
 
-                return Provider.of<Task_data_provider>(contextt).tasks[i];
-              },
+                  return Provider.of<Task_data_provider>(contextt).tasks[i];
+                },
+              ),
             ),
-            floatingActionButton: FloatingActionButton(
+            floatingActionButton: NeumorphicFloatingActionButton(
+              style: NeumorphicStyle(
+                intensity: 1,
+                oppositeShadowLightSource: true,
+              ),
               onPressed: () {
                 Navigator.push(
                   contextt,
@@ -52,6 +64,7 @@ class _Main_screenState extends State<Main_screen> {
                   ),
                 );
               },
+              child: Icon(Icons.add),
             ),
           )
         : CircularProgressIndicator();
