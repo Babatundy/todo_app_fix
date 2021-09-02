@@ -7,16 +7,20 @@ import 'package:fixingtodoapp/providers/provider.dart';
 import 'package:fixingtodoapp/screens/tasks_screen.dart';
 
 class Main_screen extends StatefulWidget {
+  static final animation_key = GlobalKey<AnimatedListState>();
+
   @override
   _Main_screenState createState() => _Main_screenState();
 }
 
-class _Main_screenState extends State<Main_screen> {
+class _Main_screenState extends State<Main_screen>
+    with SingleTickerProviderStateMixin {
   int index = 0;
 
   @override
   void initState() {
     Provider.of<Task_data_provider>(context, listen: false).check_database();
+
     super.initState();
   }
 
@@ -35,9 +39,13 @@ class _Main_screenState extends State<Main_screen> {
             ),
             body: Neumorphic(
               child: ListView.builder(
+                key: Main_screen.animation_key,
                 itemCount:
                     Provider.of<Task_data_provider>(contextt).tasks.length,
-                itemBuilder: (context, i) {
+                itemBuilder: (
+                  context,
+                  i,
+                ) {
                   index = i;
                   Provider.of<Task_data_provider>(contextt, listen: false)
                       .tasks[i]
@@ -54,15 +62,22 @@ class _Main_screenState extends State<Main_screen> {
               ),
               onPressed: () {
                 Navigator.push(
-                  contextt,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return Task_screen(
-                        index: index,
-                      );
-                    },
-                  ),
+                  context,
+                  PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      transitionsBuilder: (context, animation, anim, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      pageBuilder: (context, animation, anim) {
+                        return Task_screen(
+                          index: index,
+                        );
+                      }),
                 );
+
               },
               child: Icon(Icons.add),
             ),
