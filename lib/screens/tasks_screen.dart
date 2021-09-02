@@ -1,4 +1,5 @@
 import 'package:fixingtodoapp/models/task.dart';
+import 'package:fixingtodoapp/screens/first_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -15,7 +16,6 @@ class Task_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SafeArea(
         child: Neumorphic(
           child: Column(
@@ -54,12 +54,13 @@ class Task_screen extends StatelessWidget {
                   Provider.of<Task_data_provider>(context, listen: false)
                       .add_to_tasks_list(
                     Task(
-                      id: Provider.of<Task_data_provider>(context, listen: false)
+                      id: Provider.of<Task_data_provider>(context,
+                              listen: false)
                           .id,
                       text: text,
-                      index:
-                          Provider.of<Task_data_provider>(context, listen: false)
-                              .index,
+                      index: Provider.of<Task_data_provider>(context,
+                              listen: false)
+                          .index,
                     ),
                   );
                   Navigator.pop(context);

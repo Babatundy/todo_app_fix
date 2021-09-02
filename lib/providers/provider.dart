@@ -37,7 +37,6 @@ class Task_data_provider with ChangeNotifier {
   bool checked = false;
 
   void check_task(bool b, int task_id) async {
-
     checked = b;
     DB_helper.instnace.update(id: task_id, checked: checked ? 1 : 0);
     notifyListeners();
@@ -60,12 +59,14 @@ class Task_data_provider with ChangeNotifier {
           notifyListeners();
         }
 
-        add_to_tasks_list_Ui_only(Task(
-          id: element["id"],
-          text: element["text"],
-          checked: checked,
-          index: i,
-        ));
+        add_to_tasks_list_Ui_only(
+          Task(
+            id: element["id"],
+            text: element["text"],
+            checked: checked,
+            index: i,
+          ),
+        );
         print(checked);
         i++;
       });
