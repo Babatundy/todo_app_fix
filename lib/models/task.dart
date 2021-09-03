@@ -7,12 +7,14 @@ class Task extends StatefulWidget {
   int id, index;
   String text;
   bool checked;
+  DateTime dateTime;
 
   Task({
     this.id,
     this.text,
     this.checked = false,
     this.index,
+    this.dateTime
   });
 
   @override
@@ -77,7 +79,11 @@ class _TaskState extends State<Task> with TickerProviderStateMixin {
               );
             },
           ),
+          onTap: (){
+            print(widget.dateTime);
+          },
           onLongPress: () {
+
             controller2.forward();
             Future ft = Future(() {});
             ft = ft.then((value) {
@@ -92,6 +98,7 @@ class _TaskState extends State<Task> with TickerProviderStateMixin {
             });
           },
           title: Text(widget.text),
+          subtitle: Text(widget.dateTime.toString()),
         ),
       ),
     );

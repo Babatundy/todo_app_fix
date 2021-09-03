@@ -4,16 +4,11 @@ import 'providers/provider.dart';
 
 import 'package:fixingtodoapp/screens/first_screen.dart';
 
-
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>Task_data_provider()),
-
-       // ChangeNotifierProvider(create: (_)=>Check_box()),
-
-
+        ChangeNotifierProvider(create: (_) => Task_data_provider()),
       ],
       child: MaterialApp(
         initialRoute: "main_screen",

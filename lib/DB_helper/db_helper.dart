@@ -9,6 +9,7 @@ class DB_helper with ChangeNotifier {
   static const task_id = "id";
   static const task_text = "text";
   static const task_checking = "checking";
+  static const task_reminder_date_time="date_time";
   static final DB_helper instnace = new DB_helper.internal();
 
   //factory DB_helper() => instnace;
@@ -26,13 +27,9 @@ class DB_helper with ChangeNotifier {
     }
   }
 
-  void reset_db() {
-    print("nomi");
-  }
-
   creat() async {
     var direcroty = await getApplicationDocumentsDirectory();
-    String path = join(direcroty.path, "sqnrpkaqps.db");
+    String path = join(direcroty.path, "sqnrpkaqpsr.db");
     return await openDatabase(path, version: 1, onCreate: oncreate);
   }
 
@@ -42,7 +39,8 @@ class DB_helper with ChangeNotifier {
       CREATE TABLE Tasks(
       $task_id INTEGER PRIMARY KEY,
       $task_checking INTEGER,
-      $task_text TEXT
+      $task_text TEXT,
+      $task_reminder_date_time DATETIME
       )
       ''',
     );

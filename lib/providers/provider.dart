@@ -7,17 +7,19 @@ class Task_data_provider with ChangeNotifier {
   int id = 1;
   int index = 0;
 
+  //inserting tasks to DB and into tasks list
   void add_to_tasks_list(Task t) async {
     DB_helper.instnace.insertt({
       "${DB_helper.task_checking}": "${0}",
-      "${DB_helper.task_text}": "${t.text}"
+      "${DB_helper.task_text}": "${t.text}",
+      "${DB_helper.task_reminder_date_time}":t.dateTime.toString()
     });
 
     tasks.add(t);
     id++;
     notifyListeners();
   }
-
+  //when starting the app we fetch data from db only
   void add_to_tasks_list_Ui_only(Task t) async {
     tasks.add(t);
     id++;
@@ -44,6 +46,7 @@ class Task_data_provider with ChangeNotifier {
 
   bool start = false;
 
+  //when loading data in the start of the app
   void check_database() async {
     int i = 0;
     print(await DB_helper.instnace.Query_all());
@@ -58,6 +61,8 @@ class Task_data_provider with ChangeNotifier {
           checked = false;
           notifyListeners();
         }
+        //connverting from string to datetime
+        DateTime dateTime=DateTime.parse(element["${DB_helper.task_reminder_date_time}"]);
 
         add_to_tasks_list_Ui_only(
           Task(
@@ -65,9 +70,9 @@ class Task_data_provider with ChangeNotifier {
             text: element["text"],
             checked: checked,
             index: i,
+            dateTime: dateTime,
           ),
         );
-        print(checked);
         i++;
       });
       start = true;
