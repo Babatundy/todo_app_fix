@@ -22,47 +22,55 @@ class Task extends StatefulWidget {
 
 class _TaskState extends State<Task> with TickerProviderStateMixin {
   AnimationController controller, controller2;
-  FlutterLocalNotificationsPlugin localNotifications= FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin localNotifications =
+      FlutterLocalNotificationsPlugin();
   Animation fade_in, fade_out;
   double start = 0, end = 1;
   bool fade_out_bool = true;
+  bool notification_is_done = false;
+  String sound = "hi.wav";
 
-  var android_details = new AndroidNotificationDetails(
-      "k", "Reminder", "reminder",
-      importance: Importance.high);
   var general_details;
+  var android_details;
 
   Future show_notification() async {
     //--------------------------------------------
     try {
-      return await localNotifications.schedule(
-        0,
-        'GET IT DONE!!!',
-        widget.text,
-        widget.dateTime,
-        general_details,
-        androidAllowWhileIdle: true,
-      );
+      if (widget.dateTime.isAfter(DateTime.now())) {
+        notification_is_done = true;
+        return await localNotifications.schedule(
+          widget.id,
+          'GET IT DONE!!!',
+          widget.text,
+          widget.dateTime,
+          general_details,
+          androidAllowWhileIdle: true,
+        );
+      }
     } catch (e) {
       print(e);
     }
-
   }
 
   @override
   void initState() {
-    general_details =  NotificationDetails(android: android_details);
+    var androidInit = new AndroidInitializationSettings("ic_launcher");
+    var initialazationSettings =
+        new InitializationSettings(android: androidInit);
+
+    localNotifications.initialize(initialazationSettings);
+
+    android_details = new AndroidNotificationDetails(
+        "d", "Reminder", "reminder",
+        sound: RawResourceAndroidNotificationSound(sound.split('.').first),
+        importance: Importance.high);
+    general_details = NotificationDetails(android: android_details);
     //initilising timezone
-   // tz.initializeTimeZones();
+    // tz.initializeTimeZones();
     //start schadualed notification
     show_notification();
     //setting up notification system
-    /*  var androidInit = new AndroidInitializationSettings("ic_launcher");
-    var initialazationSettings =
-        new InitializationSettings(android: androidInit);
-    localNotifications = new FlutterLocalNotificationsPlugin();
-    localNotifications.initialize(initialazationSettings);
-*/
+
     //setting up animations
     controller = AnimationController(
       vsync: this,
@@ -87,6 +95,10 @@ class _TaskState extends State<Task> with TickerProviderStateMixin {
     controller.dispose();
     controller2.dispose();
     super.dispose();
+  }
+
+  void remove_notification() async {
+    await localNotifications.cancel(widget.id);
   }
 
   @override
@@ -115,7 +127,7 @@ class _TaskState extends State<Task> with TickerProviderStateMixin {
           ),
           onLongPress: () {
             //todo:remove allarm when done
-
+            remove_notification();
             controller2.forward();
             Future ft = Future(() {});
             ft = ft.then((value) {
