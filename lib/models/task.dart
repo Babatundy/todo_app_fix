@@ -61,7 +61,7 @@ class _TaskState extends State<Task> with TickerProviderStateMixin {
     localNotifications.initialize(initialazationSettings);
 
     android_details = new AndroidNotificationDetails(
-        "d", "Reminder", "reminder",
+        "scream", "Reminderr", "reminderr",
         sound: RawResourceAndroidNotificationSound(sound.split('.').first),
         importance: Importance.high);
     general_details = NotificationDetails(android: android_details);
